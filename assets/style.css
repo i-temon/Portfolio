@@ -1,0 +1,438 @@
+/* Taim Alsharabaty portfolio. An original design inspired by painted, tilted, high-contrast menus:
+   a painted teal and red backdrop, serif labels on slanted splashes, brush-shaped water, and a red page wipe. */
+
+:root {
+  --ink: #0c0c0c;
+  --cream: #f3efe2;
+  --white: #ffffff;
+  --red: #e0243f;
+  --teal: #2aa9a6;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "DM Sans", system-ui, sans-serif;
+  --skew: skewX(-6deg);
+  /* Menu colours. Inside the brush-shaped water the ink layer swaps these, so labels invert over the water. */
+  --fg: var(--white);
+  --fg-current: var(--ink);
+  --shadow: var(--ink);
+  --splash: var(--red);
+}
+:lang(ar) {
+  --display: "Cairo", "Segoe UI", Tahoma, sans-serif;
+  --body: "Cairo", system-ui, sans-serif;
+  --skew: skewX(-3deg);
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; font-size: 121%; }
+body {
+  margin: 0;
+  min-height: 100svh;
+  overflow-x: hidden;
+  color: var(--ink);
+  font: 400 1rem/1.6 var(--body);
+  background: linear-gradient(160deg, var(--teal), #0f5a63 60%, var(--red));
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+:lang(ar) * { letter-spacing: 0 !important; }
+#bg { position: fixed; inset: 0; z-index: -1; display: block; width: 100%; height: 100%; }
+
+/* ---------- Top bar ---------- */
+.top {
+  position: fixed; inset: 0 0 auto 0; z-index: 8; pointer-events: none;
+  display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  padding: calc(0.8rem + env(safe-area-inset-top, 0px)) 1.2rem 0.8rem;
+}
+.top > * { pointer-events: auto; }
+.top-tools { display: flex; gap: 0.6rem; }
+.brand, .palbtn, .lang {
+  display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.9rem;
+  border: 2px solid var(--ink); background: var(--cream); color: var(--ink);
+  font: 900 0.95rem/1 var(--display); text-decoration: none; text-transform: uppercase; cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink); transition: transform 0.15s, box-shadow 0.15s;
+}
+.brand:hover, .palbtn:hover, .lang:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+.palbtn kbd { padding: 0.05rem 0.4rem; border: 2px solid var(--ink); background: var(--white); font: 700 0.8rem/1 var(--body); }
+.lang { min-width: 3rem; justify-content: center; text-transform: none; }
+:lang(ar) .brand, :lang(ar) .palbtn { text-transform: none; }
+
+/* ---------- Painted water: the brush-shaped window ---------- */
+.ink {
+  background-color: var(--red);
+  background-image: url(caustics.png), url(caustics.png);
+  background-size: 360px, 240px;
+  background-blend-mode: screen;
+  clip-path: url(#brush-clip);
+}
+
+/* ---------- Home ---------- */
+.home { position: relative; isolation: isolate; min-height: 100svh; overflow: hidden; }
+.home > .ink { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.home > .ink-layer {
+  position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  clip-path: url(#brush-clip);
+  --fg: var(--ink); --fg-current: var(--white); --shadow: var(--white);
+}
+.home > .hero { position: absolute; z-index: 2; top: 2vh; right: -3vw; width: min(72.6vw, 1041px); height: 96vh; }
+.hero canvas { display: block; width: 100%; height: 100%; cursor: grab; outline: none; }
+.hero canvas.grabbing { cursor: grabbing; }
+.hero canvas:focus-visible { outline: 3px solid var(--ink); outline-offset: -8px; }
+.hero-cap {
+  position: absolute; left: 1rem; bottom: 1rem; margin: 0; padding: 0.35rem 0.7rem;
+  background: var(--cream); border: 2px solid var(--ink); font: 700 0.9rem/1.3 var(--body);
+}
+
+/* The stage is laid out once for the page and once more, inverted, inside the ink layer. */
+.stage {
+  position: relative; z-index: 3; min-height: 100svh; pointer-events: none;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: 5.5rem 6.05vw 5rem;
+}
+.masthead { grid-column: 1; grid-row: 1; align-self: start; display: grid; justify-items: start; gap: 0.9rem; }
+.name {
+  margin: 0; font: 900 clamp(1.8rem, 4.36vw, 3rem)/1 var(--display); letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--fg); text-shadow: 0 0.06em 0 var(--shadow);
+}
+.intro {
+  margin: 0; max-width: 36ch; padding: 0.6rem 0.9rem; background: var(--cream); color: var(--ink);
+  border: 2px solid var(--ink); font: 700 0.98rem/1.5 var(--body);
+}
+
+/* ---------- The menu: tilted serif labels on slanted splashes ---------- */
+.menu { grid-column: 1; grid-row: 2; align-self: center; }
+.stage .menu { margin-top: 3.4rem; }   /* keeps the first label clear of the intro box */
+.menu ul {
+  list-style: none; margin: 0; padding: 0; display: grid; gap: 0.05em;
+  transform: rotate(-9deg); transform-origin: 0 50%;
+}
+.menu li:nth-child(even) { margin-inline-start: 2.6em; }
+.item {
+  position: relative; isolation: isolate; display: inline-block; padding: 0.04em 0.32em 0.12em;
+  font: 900 clamp(1.8rem, 4.11vw, 3.1rem)/1.02 var(--display); text-transform: uppercase; letter-spacing: 0.01em; white-space: nowrap;
+  color: var(--fg); text-decoration: none; text-shadow: 0 0.05em 0 var(--shadow);
+  transform: var(--skew); pointer-events: auto; transition: color 0.2s, transform 0.2s, text-shadow 0.2s;
+}
+.item::before {
+  content: ""; position: absolute; inset: 0 -0.18em; z-index: -1; background: var(--splash);
+  clip-path: polygon(3% 10%, 17% 3%, 31% 8%, 46% 1%, 60% 7%, 77% 0%, 94% 6%, 100% 22%, 96% 38%, 100% 60%,
+                     93% 80%, 98% 96%, 82% 100%, 66% 92%, 49% 100%, 33% 93%, 16% 100%, 4% 92%, 0% 74%, 4% 56%, 0% 36%);
+  opacity: 0; transform: scale(0.92); transition: opacity 0.2s, transform 0.25s cubic-bezier(0.2, 0.9, 0.2, 1.2);
+}
+a.item.is-current::before, a.item:hover::before, a.item:focus-visible::before, a.item.hot::before { opacity: 1; transform: scale(1); }
+a.item.is-current, a.item:hover, a.item:focus-visible, a.item.hot { color: var(--fg-current); text-shadow: none; }
+a.item:hover, a.item:focus-visible, a.item.hot { transform: var(--skew) translateX(0.25em); }
+.item.is-off > span:first-child { opacity: 0.55; }
+.stamp {
+  position: absolute; right: -0.6em; top: -0.35em; z-index: 2; pointer-events: none; white-space: nowrap;
+  padding: 0.2em 0.5em 0.16em; background: var(--cream); color: var(--red); border: 0.07em solid var(--red);
+  font: 900 0.36em/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase;
+  transform: rotate(-10deg); filter: url(#rough); box-shadow: 0 0 0 0.06em var(--cream);
+}
+
+.stats { grid-column: 2; grid-row: 3; justify-self: end; align-self: end; display: grid; gap: 0.45rem; min-width: min(20rem, 90vw); }
+.stat {
+  margin: 0; display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding: 0.45rem 0.8rem; background: var(--cream); color: var(--ink); border-inline-start: 0.45rem solid var(--red);
+  font: 700 0.95rem/1.25 var(--body);
+}
+.stat strong { font: 900 1.5rem/1 var(--display); white-space: nowrap; }
+
+/* ---------- Command bar (home): description on the left, keys on the right ---------- */
+.command {
+  position: fixed; inset: auto 0 0 0; z-index: 8; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+  gap: 0.6rem 1rem; padding: 0.7rem 1.2rem calc(0.7rem + env(safe-area-inset-bottom, 0px));
+  background: var(--cream); border-top: 3px solid var(--ink);
+}
+.desc { margin: 0; max-width: 60ch; padding: 0.45rem 0.9rem; background: var(--ink); color: var(--cream); font: 700 0.98rem/1.3 var(--body); }
+.keys { margin: 0; display: flex; align-items: center; gap: 0.5rem; font: 700 0.95rem/1 var(--body); }
+kbd {
+  display: inline-grid; place-items: center; min-width: 1.9rem; height: 1.9rem; padding: 0 0.45rem;
+  border: 2px solid var(--ink); border-radius: 999px; background: var(--white); font: 700 0.85rem/1 var(--body);
+}
+
+/* ---------- Inner pages: the same menu on the left, a cream panel on the right ---------- */
+.page {
+  position: relative; z-index: 2; min-height: 100svh; max-width: 82rem; margin: 0 auto;
+  display: grid; grid-template-columns: minmax(14rem, 20rem) minmax(0, 1fr); gap: 2.4rem; align-items: start;
+  padding: 6.5rem 6.05vw 5rem;
+}
+.page .menu { grid-column: 1; grid-row: 1; position: sticky; top: 6rem; align-self: start; }
+.page .menu ul { transform: rotate(-4deg); }
+.page .menu .item { font-size: clamp(1.5rem, 2.66vw, 2.2rem); }
+.panel {
+  grid-column: 2; grid-row: 1; background: var(--cream); color: var(--ink);
+  border: 3px solid var(--ink); box-shadow: 12px 12px 0 var(--ink); padding: clamp(1.4rem, 3.63vw, 2.6rem);
+}
+.panel-title { margin: 0 0 1.1rem; font: 900 clamp(2.4rem, 6.29vw, 4.2rem)/0.95 var(--display); text-transform: uppercase; }
+.panel h2 { margin: 2.2rem 0 0.9rem; font: 900 1.55rem/1.15 var(--display); text-transform: uppercase; }
+.panel p { margin: 0 0 0.9rem; max-width: 64ch; }
+.lead { font: 700 1.2rem/1.55 var(--body); }
+
+/* 3D viewers */
+.viewers { display: grid; gap: 1.6rem; margin-top: 1.6rem; }
+.viewer { position: relative; margin: 0; border: 3px solid var(--ink); background: var(--ink); }
+.viewer canvas { display: block; width: 100%; height: clamp(315px, 50.82vw, 508px); cursor: grab; outline: none; }
+.viewer canvas.grabbing { cursor: grabbing; }
+.viewer canvas:focus-visible { outline: 3px solid var(--red); outline-offset: -6px; }
+.viewer figcaption { display: grid; gap: 0.2rem; padding: 0.8rem 1rem; background: var(--cream); border-top: 3px solid var(--ink); }
+.viewer figcaption strong { font: 900 1.3rem/1.2 var(--display); text-transform: uppercase; }
+.viewer-status {
+  position: absolute; inset: 0; display: grid; place-items: center; margin: 0; padding: 1.5rem; text-align: center;
+  color: var(--cream); font: 700 1rem/1.4 var(--body);
+}
+
+/* Commissions */
+.services { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.7rem; }
+.services li { padding: 0.8rem 1rem; border: 2px solid var(--ink); background: var(--white); font: 700 1rem/1.3 var(--body); }
+.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 0.8rem; }
+.steps li { counter-increment: step; display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 0.9rem; align-items: center; }
+.steps li::before {
+  content: counter(step); display: grid; place-items: center; width: 3rem; height: 3rem;
+  background: var(--red); color: var(--cream); font: 900 1.4rem/1 var(--display); transform: var(--skew);
+}
+.steps span { margin: 0; }
+.btn {
+  display: inline-flex; align-items: center; margin: 0.6rem 0 0.4rem; padding: 0.9rem 1.4rem;
+  background: var(--ink); color: var(--cream); text-decoration: none; text-transform: uppercase;
+  font: 900 1.1rem/1 var(--display); letter-spacing: 0.04em; box-shadow: 6px 6px 0 var(--red);
+  transform: var(--skew); transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn:hover, .btn:focus-visible { transform: var(--skew) translate(-3px, -3px); box-shadow: 9px 9px 0 var(--red); }
+.quote { margin: 0.4rem 0 0; padding: 1.2rem 1.4rem; background: var(--white); border-inline-start: 0.5rem solid var(--red); }
+.quote p { margin: 0 0 0.6rem; font: italic 900 clamp(1.4rem, 3.15vw, 2rem)/1.2 var(--display); }
+.quote footer { font: 700 0.95rem/1.4 var(--body); }
+
+/* About */
+.timeline { margin: 0; padding: 0 0 0 1.4rem; border-inline-start: 3px solid var(--ink); display: grid; gap: 0.9rem; }
+.timeline li { position: relative; list-style: none; padding-inline-start: 0.4rem; }
+.timeline li::before {
+  content: ""; position: absolute; inset-inline-start: -1.95rem; top: 0.45rem; width: 0.85rem; height: 0.85rem;
+  background: var(--red); transform: rotate(45deg);
+}
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.8rem; margin: 0; }
+.skills > div { padding: 0.9rem 1rem; background: var(--white); border: 2px solid var(--ink); }
+.skills dt { font: 900 1.1rem/1.2 var(--display); text-transform: uppercase; }
+.skills dd { margin: 0.3rem 0 0; font: 400 0.98rem/1.45 var(--body); }
+.contact { display: grid; gap: 0.6rem; margin: 0; }
+.contact > div { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 1rem; align-items: baseline; }
+.contact dt { font: 700 0.95rem/1.4 var(--body); opacity: 0.75; }
+.contact dd { margin: 0; font: 700 1.05rem/1.4 var(--body); }
+.contact a { text-decoration: underline; text-underline-offset: 0.2em; }
+
+/* ---------- Command palette ---------- */
+.palette {
+  position: fixed; inset: 0; z-index: 60; display: grid; place-items: start center; padding-top: 14vh;
+  background: rgba(8, 8, 8, 0.55);
+}
+.palette-box { width: min(36rem, 92vw); padding: 1.1rem; background: var(--cream); border: 3px solid var(--ink); box-shadow: 10px 10px 0 var(--red); }
+.palette-title { margin: 0 0 0.6rem; font: 900 1.2rem/1 var(--display); text-transform: uppercase; }
+#pal-input {
+  width: 100%; padding: 0.7rem 0.9rem; border: 3px solid var(--ink); background: var(--white);
+  color: var(--ink); font: 700 1.1rem/1.2 var(--body);
+}
+#pal-input:focus { outline: 3px solid var(--red); outline-offset: 2px; }
+.palette-list { list-style: none; margin: 0.8rem 0 0; padding: 0; display: grid; gap: 0.3rem; max-height: 50vh; overflow: auto; }
+.palette-list a, .palette-list button {
+  display: block; width: 100%; padding: 0.6rem 0.8rem; border: 0; background: transparent; color: var(--ink);
+  text-align: start; text-decoration: none; text-transform: uppercase; cursor: pointer;
+  font: 900 1.25rem/1.2 var(--display);
+}
+.palette-list li.sel a, .palette-list li.sel button { background: var(--red); color: var(--cream); }
+
+/* ---------- Red page wipe (about 0.2 s out, 0.2 s in) ---------- */
+.wipe {
+  position: fixed; top: -20vh; bottom: -20vh; left: -10vw; right: -10vw; z-index: 50; pointer-events: none;
+  background: var(--red); transform: translateX(-120%) skewX(-12deg);
+}
+.wiping .wipe { transform: translateX(0) skewX(-12deg); transition: none; }
+.wipe.enter { transform: translateX(0) skewX(-12deg); transition: transform 0.2s cubic-bezier(0.6, 0, 0.2, 1); }
+.wipe.leave { transform: translateX(120%) skewX(-12deg); transition: transform 0.2s cubic-bezier(0.6, 0, 0.2, 1); }
+
+/* Arabic home: the grid keeps the left-to-right placement the brush and the car were designed for,
+   while the Arabic text inside each column still reads right to left. */
+:lang(ar) .stage { direction: ltr; }
+:lang(ar) .masthead, :lang(ar) .intro, :lang(ar) .menu, :lang(ar) .stat, :lang(ar) .desc, :lang(ar) .keys { direction: rtl; }
+/* Arabic labels are shorter than the Bodoni ones, so they get a slightly smaller size. */
+:lang(ar) .item { font-size: clamp(1.6rem, 3.87vw, 2.8rem); }
+:lang(ar) .page .menu .item { font-size: clamp(1.3rem, 2.3vw, 1.8rem); }
+:lang(ar) .stage .item { font-size: clamp(1.4rem, 3.15vw, 2.3rem); }
+:lang(ar) .stage .menu { margin-top: 3.8rem; }
+:lang(ar) .intro { max-width: 58ch; font-size: 0.92rem; }
+:lang(ar) .stage { padding-bottom: 5.8rem; }
+
+/* ---------- Small screens ---------- */
+@media (max-width: 860px) {
+  .stage { grid-template-columns: 1fr; grid-template-rows: auto auto auto; padding-top: 6rem; padding-bottom: 8rem; }
+  .masthead, .menu, .stats { grid-column: 1; grid-row: auto; }
+  .menu ul { transform: rotate(-5deg); }
+  .stats { justify-self: start; }
+  .home > .hero { top: auto; bottom: 3.5rem; right: -12vw; width: 112vw; height: 44vh; }
+  .hero-cap { display: none; }
+  .page { grid-template-columns: 1fr; }
+  .page .menu { position: static; }
+  .page .menu ul { transform: rotate(-4deg); }
+  .contact > div, .timeline { grid-template-columns: 1fr; }
+  .contact > div { gap: 0.2rem; }
+}
+
+
+/* ================= Accessibility, music, visualiser and opening ================= */
+
+/* Skip link and live region */
+.skip { position: fixed; left: 1rem; top: -5rem; z-index: 100; padding: 0.6rem 1rem; background: var(--cream); color: var(--ink); border: 3px solid var(--ink); font: 900 1rem/1 var(--display); text-decoration: none; }
+.skip:focus { top: 1rem; }
+.live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Top bar tools */
+.top-tools { gap: 0.5rem; }
+.tool { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border: 2px solid var(--ink); background: var(--cream); color: var(--ink); font: 900 0.95rem/1 var(--display); text-transform: uppercase; cursor: pointer; box-shadow: 4px 4px 0 var(--ink); transition: transform 0.15s, box-shadow 0.15s; }
+.tool:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+.tool[aria-pressed="true"] { background: var(--red); color: var(--cream); }
+.tool .ico { font: 400 1rem/1 var(--body); }
+
+/* Accessibility panel */
+.access { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: rgba(8, 8, 8, 0.55); }
+.access[hidden] { display: none; }
+.access-box { width: min(30rem, 92vw); padding: 1.4rem; display: grid; gap: 0.8rem; background: var(--cream); border: 3px solid var(--ink); box-shadow: 10px 10px 0 var(--red); }
+.access-box h2 { margin: 0; font: 900 1.6rem/1.1 var(--display); text-transform: uppercase; }
+.toggle { display: flex; justify-content: space-between; align-items: center; gap: 1rem; width: 100%; padding: 0.7rem 0.9rem; background: var(--white); color: var(--ink); border: 3px solid var(--ink); font: 700 1.05rem/1.2 var(--body); text-align: start; cursor: pointer; }
+.toggle::after { content: ""; flex: none; width: 1.1rem; height: 1.1rem; border: 2px solid currentColor; }
+.toggle[aria-pressed="true"] { background: var(--red); color: var(--cream); }
+.toggle[aria-pressed="true"]::after { background: currentColor; }
+.access .hint { margin: 0; font: 400 0.9rem/1.4 var(--body); }
+.access .close { justify-self: end; padding: 0.6rem 1.1rem; background: var(--ink); color: var(--cream); border: 0; font: 900 1rem/1 var(--display); cursor: pointer; }
+
+/* The opening: the name appears, the red slash sweeps across, then the screen gives way to the menu */
+.opening { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; background: rgba(10, 10, 10, 0.24); }
+.opening.leaving { animation: openingOut 0.6s ease both; }
+@keyframes openingOut { to { opacity: 0; transform: scale(1.04); } }
+.opening-name { position: relative; isolation: isolate; margin: 0; text-align: center; color: var(--cream); font-family: var(--display); font-weight: 900; text-transform: uppercase; text-shadow: 0.05em 0.05em 0 var(--ink); }
+.opening-name .l1 { display: block; font-size: clamp(4rem, 13.2vw, 10rem); line-height: 0.9; }
+.opening-name .l2 { position: relative; display: block; margin-top: 0.12em; font-size: clamp(2.2rem, 8.14vw, 6.4rem); line-height: 1; letter-spacing: 0.03em; }
+.opening-name .l2::before { content: ""; position: absolute; inset: 0.02em -0.2em; z-index: -1; background: var(--red); transform: skewX(-10deg) scaleX(0); transform-origin: left center; animation: slash 0.6s 0.5s cubic-bezier(0.7, 0, 0.2, 1) forwards; }
+.opening-name .ch { display: inline-block; animation: chIn 0.55s cubic-bezier(0.2, 0.9, 0.2, 1.2) both; animation-delay: calc(var(--i) * 40ms + 0.12s); }
+@keyframes chIn { from { opacity: 0; transform: translateY(0.6em) skewX(-16deg); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes slash { to { transform: skewX(-10deg) scaleX(1); } }
+.opening-skip { position: absolute; right: 1.2rem; bottom: 1.2rem; padding: 0.5rem 0.9rem; background: var(--cream); color: var(--ink); border: 2px solid var(--ink); font: 900 1rem/1 var(--display); cursor: pointer; }
+html.reduce-motion .opening-name .ch { animation: none; }
+html.reduce-motion .opening-name .l2::before { animation: none; transform: skewX(-10deg) scaleX(1); }
+
+/* UI start: the masthead and the menu animate in once the opening has finished */
+html:not(.ui-start) .masthead, html:not(.ui-start) .menu li, html:not(.ui-start) .stats { opacity: 0; }
+html.ui-start:not(.reduce-motion) .masthead > * { animation: rise 0.6s cubic-bezier(0.2, 0.9, 0.2, 1.1) both; }
+html.ui-start:not(.reduce-motion) .masthead > :nth-child(2) { animation-delay: 0.08s; }
+html.ui-start:not(.reduce-motion) .menu li { animation: rise 0.6s cubic-bezier(0.2, 0.9, 0.2, 1.1) both; }
+html.ui-start:not(.reduce-motion) .menu li:nth-child(1) { animation-delay: 0.12s; }
+html.ui-start:not(.reduce-motion) .menu li:nth-child(2) { animation-delay: 0.2s; }
+html.ui-start:not(.reduce-motion) .menu li:nth-child(3) { animation-delay: 0.28s; }
+html.ui-start:not(.reduce-motion) .menu li:nth-child(4) { animation-delay: 0.36s; }
+html.ui-start:not(.reduce-motion) .menu li:nth-child(5) { animation-delay: 0.44s; }
+html.ui-start:not(.reduce-motion) .stats { animation: rise 0.6s 0.4s both; }
+html.reduce-motion .masthead, html.reduce-motion .menu li, html.reduce-motion .stats { opacity: 1; animation: none; }
+html:not(.reduce-motion) .home > .ink { animation: flow 16s linear infinite; }
+@keyframes rise { from { opacity: 0; translate: -60px 0; } }
+@keyframes flow { to { background-position: 360px 360px, -240px 240px; } }
+
+/* Visualiser: rises from the bottom of the screen, behind every control; it only shows while music plays */
+.viz { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 24vh; pointer-events: none; opacity: 0; transition: opacity 0.6s; }
+.playing .viz { opacity: 1; }
+.home > .viz { z-index: 2; }
+.home > .ink-layer > .viz { z-index: 0; }
+body > .viz { position: fixed; z-index: -1; }
+
+/* The drop: one soft flash behind the text */
+.flash { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0; mix-blend-mode: screen; background: radial-gradient(ellipse at 50% 45%, rgba(255, 255, 255, 0.6), rgba(224, 36, 63, 0.4) 45%, transparent 75%); }
+
+/* The beat: the water and the 3D models breathe lightly; the text never moves */
+.home > .ink { filter: brightness(calc(1 + var(--beat, 0) * 0.2 + var(--drop, 0) * 0.25)); }
+.hero canvas, .viewer canvas { transform: scale(calc(1 + var(--beat, 0) * 0.018 + var(--drop, 0) * 0.045)); transform-origin: 50% 55%; }
+html.reduce-motion .home > .ink, html.reduce-motion .hero canvas, html.reduce-motion .viewer canvas { filter: none; transform: none; }
+html.reduce-motion .flash, html.reduce-motion .viz { display: none; }
+
+/* High contrast: a plain black ground and white labels, with no painted backdrop */
+html.contrast #bg, html.contrast .flash { display: none; }
+html.contrast body { background: #0c0c0c; }
+html.contrast .item { color: #ffffff; text-shadow: none; }
+html.contrast .item::before { background: #ffffff; }
+html.contrast a.item:hover, html.contrast a.item:focus-visible, html.contrast a.item.hot { color: #0c0c0c; }
+html.contrast .name { color: #ffffff; text-shadow: none; }
+html.contrast .viz { opacity: 0.5; }
+
+/* Larger text: one more step on top of the 110% base */
+html.text-large { font-size: 135%; }
+:lang(ar) .tool { text-transform: none; }
+
+/* Home fits one 720 px screen at the larger type size: the stats sit beside the menu, not under it */
+.stage { padding: 4.2rem 6.05vw 4.6rem; }
+.stage .menu { margin-top: 1.8rem; }
+.stage .stats { grid-column: 2; grid-row: 2; align-self: end; }
+@media (max-width: 860px) { .stage .stats { grid-column: 1; grid-row: auto; } }
+
+/* The bottom strip is gone: the description and the key hints keep their places, without a bar behind them */
+.command { background: none; border-top: 0; }
+.keys { color: var(--cream); text-shadow: 0 0 0.35em rgba(12, 12, 12, 0.9); }
+
+/* The key caps keep dark lettering on their light faces; the stats box clears the key hints */
+.keys kbd { color: var(--ink); text-shadow: none; }
+.stage { padding-bottom: 5.4rem; }
+
+/* A clear gap between the stats and the key hints */
+.stage .stats { margin-bottom: 1.4rem; }
+
+/* ---------- Persona additions: social links and the dialogue box ---------- */
+.nickname { margin: 0 0 0.3rem; font-family: "Bodoni Moda", Georgia, serif; font-weight: 800; font-size: 1.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.persona-note { display: inline-block; margin: 0 0 1.2rem; padding: 0.35rem 0.8rem; background: var(--ink); color: var(--cream); font-weight: 700; }
+.social-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); gap: 0.8rem; margin: 0 0 1rem; padding: 0; list-style: none; }
+.social-cards li { padding: 0.85rem 0.9rem 0.9rem; background: #fffdf6; border: 3px solid var(--ink); }
+.rank { display: inline-block; margin-bottom: 0.45rem; padding: 0.2rem 0.5rem; background: var(--red); color: var(--cream); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.sl-name { display: block; font-family: "Bodoni Moda", Georgia, serif; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; }
+.sl-value { display: block; margin-top: 0.2rem; color: var(--ink); font-weight: 700; line-height: 1.4; overflow-wrap: anywhere; }
+.dialogue { position: relative; margin: 1.6rem 0 0; padding: 1.1rem 1.3rem 1rem; background: var(--ink); color: var(--cream); border: 3px solid var(--cream); box-shadow: 8px 8px 0 var(--red); }
+.speaker { position: absolute; top: -0.9rem; left: 1rem; padding: 0.22rem 0.6rem; background: var(--red); color: var(--cream); font-family: "Bodoni Moda", Georgia, serif; font-weight: 800; font-size: 0.92rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.dialogue p { margin: 0.3rem 0 0.5rem; font-size: 1.1rem; line-height: 1.5; }
+.dialogue footer { font-size: 0.9rem; opacity: 0.85; }
+html[lang="ar"] .nickname, html[lang="ar"] .sl-name, html[lang="ar"] .speaker, html[lang="ar"] .rank { font-family: Cairo, sans-serif; }
+@media (hover: none) { .keys { display: none; } }
+
+/* ---------- Phone width: all three top-bar tools stay on screen; their text labels are hidden visually but still read aloud ---------- */
+@media (max-width: 600px) {
+  .top .brand { font-size: 0.9rem; }
+  .top-tools { gap: 0.35rem; }
+  .tool { position: relative; padding: 0.4rem 0.55rem; gap: 0.25rem; }
+  .tool .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .lang { min-width: 2.6rem; padding: 0.4rem 0.5rem; }
+}
+
+/* ---------- Tablet and phone: the inner pages stack, the menu first and then the panel ---------- */
+@media (max-width: 860px) {
+  .page .menu { grid-column: 1; grid-row: 1; }
+  .panel { grid-column: 1; grid-row: 2; min-width: 0; }
+}
+
+/* The palette hides the entries that do not match; their own display rule must not override the hidden attribute */
+#palette li[hidden] { display: none !important; }
+
+/* The red wipe slides off to the right between pages. Its clipping layer is screen-sized, so the wipe never widens the page. */
+.wipe-clip { position: fixed; inset: 0; overflow: hidden; z-index: 50; pointer-events: none; }
+.wipe-clip .wipe { position: absolute; }
+
+/* ---------- Phones: titles and the inner-page menu fit inside the screen ---------- */
+@media (max-width: 600px) {
+  .panel { padding: 1.2rem 1.1rem; }
+  .panel-title { font-size: clamp(1.9rem, 9.2vw, 3.2rem); overflow-wrap: anywhere; }
+  .page .menu ul { transform: rotate(-2deg); }
+  .page .menu .item { font-size: 1.3rem; }
+}
+
+/* ---------- Tablets and phones: the header keeps to a row of icons, so Arabic labels never push it off the edge ---------- */
+@media (max-width: 860px) {
+  .tool .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+
+/* The screen-reader announcement box is visually hidden and clipped, so its text can never widen the page */
+.live { position: absolute; left: 0; top: 0; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+/* The decorative slashes and the page wipe are meant to run off the edge. The page itself never scrolls sideways. */
+html, body { overflow-x: hidden; }
