@@ -34,8 +34,8 @@ const AR = {
   stat_comm_v: "حوالي 7",
   stat_3d: "سنوات في الفن ثلاثي الأبعاد",
   stat_3d_v: "2",
-  d_3d: "نموذج لسيارة GT-R، ونموذج شخصية بالطلب، ودراسة يد بهيكل سلكي.",
-  d_comm: "شخصيات وأدوات وأصول جاهزة للألعاب ورسوم رقمية.",
+  d_3d: "نموذج لسيارة GT-R، ونموذج شخصية بالطلب، ودراسة يد.",
+  d_comm: "شخصيات وأدوات وأصول جاهزة للألعاب وتصميم جرافيك.",
   d_about: "التعليم والمهارات الدراسية والإنجازات.",
   d_contact: "البريد الإلكتروني والهاتف والموقع.",
   models_lead: "ثلاثة نماذج بهيكل سلكي: سيارة من مشروع شخصي، وشخصية صنعتها بالطلب، ودراسة يد في Blender.",
@@ -53,6 +53,7 @@ const AR = {
   svc_4: "نماذج صلبة: أسلحة ومركبات",
   svc_5: "رسم ثنائي الأبعاد",
   svc_6: "تصميم جرافيك",
+  svc_closed: "غير متاح للطلب حالياً",
   proc_h: "كيف تبدأ الطلبية",
   step_1: "أرسل وصفاً: ما تحتاجه، ومكان الاستخدام، والمراجع، والموعد النهائي، والميزانية.",
   step_2: "أرد بالنطاق والمدة والسعر.",
@@ -78,7 +79,7 @@ const AR = {
   sk_data: "البيانات",
   sk_data_v: "تحليل البيانات في Excel",
   sk_3d: "الفن ثلاثي الأبعاد",
-  sk_3d_v: "Blender وMaya وZBrush وSubstance Painter وبرنامج 3ds Max",
+  sk_3d_v: "Blender وMaya وZBrush وSubstance Painter",
   ach_h: "الإنجازات",
   ach_1: "المركز الأول في مسابقة التحدث بالإنجليزية، لواء ماركا.",
   lang_h: "اللغات",
@@ -92,6 +93,8 @@ const AR = {
   persona_note: "تصميم هذا الموقع مستوحى من قوائم ألعاب Persona.",
   social_h: "روابط التواصل",
   rank: "المرتبة 1",
+  issue: "العدد 01",
+  marquee: "فنان ثلاثي الأبعاد ✦ Blender ✦ Maya ✦ ZBrush ✦ Substance Painter ✦ عمّان، الأردن ✦ IT ✦ BTEC المستوى الثالث ✦ ",
 };
 const EN_MSG = { music_on: "Music on", music_off: "Music off", on: "On", off: "Off", en: "English", ar: "العربية" };
 
@@ -433,12 +436,12 @@ function drawVisualiser(active, t, beat) {
     const ctx = v.ctx;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = v.inverted ? "rgba(12, 12, 12, 0.9)" : "rgba(243, 239, 226, 0.9)";
+    ctx.fillStyle = v.inverted ? "rgba(7, 7, 15, 0.9)" : "rgba(244, 242, 234, 0.92)";
     const slot = w / BARS;
     const barW = slot * 0.6;
     for (let i = 0; i < BARS; i++) {
-      const bh = Math.max(3, levels[i] * h * 0.85);
-      ctx.fillRect(i * slot + (slot - barW) / 2, h - bh, barW, bh);
+      const bh = levels[i] * h * 0.85;
+      if (bh > 0.5) ctx.fillRect(i * slot + (slot - barW) / 2, h - bh, barW, bh);
     }
   });
 }

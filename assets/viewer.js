@@ -1,16 +1,15 @@
-/* 3D viewers. The two models are glTF files and the hand is a pair of data files, all loaded from assets/models,
+/* 3D viewers. The models are glTF files and the hand is a pair of data files, all loaded from assets/models,
    so the site must be opened through a web address (GitHub Pages or a local server).
-   Every model is drawn as an opaque wireframe: a black fill with coloured edges.
-   Drag to turn, or use the arrow keys when a canvas has focus. Rendering pauses while a canvas is off screen. */
+   Every model is drawn as a wireframe: a near-black fill with coloured edges.
+   Drag to turn, or use the arrow keys when a canvas has focus. Drawing pauses while a canvas is off screen. */
 (() => {
   const reduced = () => document.documentElement.classList.contains("reduce-motion");
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  const FILL = 0x05050c;          // near black, so the far side of every model stays hidden
+  const FIT_RADIUS = 0.72;        // the model is scaled so a sphere this size holds it at any turn
 
-  // Turns a loaded model into an opaque wireframe: every mesh gets a black fill and a coloured edge layer.
   const toWireframe = (root, color) => {
-    const fill = new THREE.MeshBasicMaterial({
-      color: 0x000000, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1,
-    });
+    const fill = new THREE.MeshBasicMaterial({ color: FILL, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
     const wire = new THREE.MeshBasicMaterial({ color, wireframe: true });
     const meshes = [];
     root.traverse(obj => { if (obj.isMesh) meshes.push(obj); });
@@ -20,33 +19,36 @@
     });
   };
 
-  // Centers a model and scales it to a fixed size, so every model frames the same way.
+  // Centres the model and scales it by its diagonal, so no turn of it can reach past the edge of its frame.
   const fit = group => {
     const box = new THREE.Box3().setFromObject(group);
-    const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
-    const scale = 2.0 / Math.max(size.x, size.y, size.z, 1e-6);
+    const radius = box.getSize(new THREE.Vector3()).length() / 2;
+    const scale = FIT_RADIUS / Math.max(radius, 1e-6);
     group.scale.setScalar(scale);
     group.position.copy(center).multiplyScalar(-scale);
   };
 
-  // Loads one glTF binary file and resolves with its scene, already drawn as a wireframe.
-  const loadModel = (url, color) => new Promise((resolve, reject) => {
+  // A solid, shaded finish in one colour: the model keeps its shape but loses the wireframe.
+  const solidMesh = (root, color) => {
+    // The renderer writes sRGB, so the colour is given in linear light to come out exactly as written
+    const c = new THREE.Color(color);
+    const mat = new THREE.MeshLambertMaterial({ color: new THREE.Color(c.r ** 2.2, c.g ** 2.2, c.b ** 2.2), side: THREE.DoubleSide });
+    root.traverse(obj => { if (obj.isMesh) obj.material = mat; });
+  };
+  const loadModel = (url, color, solid) => new Promise((resolve, reject) => {
     new THREE.GLTFLoader().load(url, gltf => {
-      toWireframe(gltf.scene, color);
+      if (solid) solidMesh(gltf.scene, solid); else toWireframe(gltf.scene, color);
       resolve(gltf.scene);
     }, undefined, reject);
   });
 
-  // Loads the hand from its manifest and raw data: an opaque black fill just behind red wires,
-  // so the far side of the hand stays hidden.
+  // The hand: a near-black fill with red edges, read from its manifest and raw vertex data.
   const loadHand = async () => {
     const manifest = await (await fetch("assets/models/hand.json")).json();
     const bytes = await (await fetch("assets/models/hand.bin")).arrayBuffer();
-    const fill = new THREE.MeshBasicMaterial({
-      color: 0x000000, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1,
-    });
-    const wire = new THREE.MeshBasicMaterial({ color: 0xe4002b, wireframe: true });
+    const fill = new THREE.MeshBasicMaterial({ color: FILL, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 });
+    const wire = new THREE.MeshBasicMaterial({ color: 0xff2442, wireframe: true });
     const hand = new THREE.Group();
     manifest.parts.forEach(part => {
       const geometry = new THREE.BufferGeometry();
@@ -82,6 +84,12 @@
     renderer.setClearColor(0x000000, opts.dark ? 1 : 0);
 
     const scene = new THREE.Scene();
+    if (opts.solid) {
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x1a1040, 0.7));
+      const sun = new THREE.DirectionalLight(0xffffff, 0.7);
+      sun.position.set(3, 4, 5);
+      scene.add(sun);
+    }
     const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 100);
     camera.position.set(0, 0, opts.dist || 4.4);
 
@@ -153,11 +161,11 @@
   };
 
   const hand = document.getElementById("hand");
-  if (hand) createViewer(hand, { load: loadHand, dark: true, spin: 0.012, hover: true, dist: 6.5, pitch: 0.12 });
+  if (hand) createViewer(hand, { load: loadHand, dark: true, spin: 0.01, hover: true, dist: 6.5, pitch: 0.12 });
   const hero = document.getElementById("gtr-hero");
-  if (hero) createViewer(hero, { load: () => loadModel("assets/models/gtr-r35.glb", 0xe0243f), fit: true, spin: 0.005, dist: 3.5, pitch: 0.1 });
+  if (hero) createViewer(hero, { load: () => loadModel("assets/models/gtr-r35.glb", 0xf4f2ea, 0xff2442), fit: true, spin: 0.005, dist: 3.5, pitch: 0.1, solid: true });
   const gtr = document.getElementById("gtr-models");
-  if (gtr) createViewer(gtr, { load: () => loadModel("assets/models/gtr-r35.glb", 0xe0243f), fit: true, spin: 0.005, dist: 4.2, pitch: 0.1 });
+  if (gtr) createViewer(gtr, { load: () => loadModel("assets/models/gtr-r35.glb", 0xf4f2ea), fit: true, spin: 0.005, dist: 3.5, pitch: 0.1 });
   const breu = document.getElementById("breu");
-  if (breu) createViewer(breu, { load: () => loadModel("assets/models/breu-character.glb", 0x3fd6cc), fit: true, spin: 0.006, dist: 4.2, pitch: 0.05 });
+  if (breu) createViewer(breu, { load: () => loadModel("assets/models/breu-character.glb", 0x5ce6ff), fit: true, spin: 0.006, dist: 3.5, pitch: 0.05 });
 })();
