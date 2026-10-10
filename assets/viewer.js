@@ -163,7 +163,7 @@
   const hand = document.getElementById("hand");
   if (hand) createViewer(hand, { load: loadHand, dark: true, spin: 0.01, hover: true, dist: 6.5, pitch: 0.12 });
   const hero = document.getElementById("gtr-hero");
-  if (hero) createViewer(hero, { load: () => loadModel("assets/models/gtr-r35.glb", 0xf4f2ea, 0xff2442), fit: true, spin: 0.005, dist: 3.5, pitch: 0.1, solid: true });
+  if (hero) createViewer(hero, { load: () => loadModel("assets/models/gtr-r35.glb", 0xf4f2ea, 0xff2442), fit: true, spin: 0.005, dist: 2.8, pitch: 0.1, solid: true });
   const gtr = document.getElementById("gtr-models");
   if (gtr) createViewer(gtr, { load: () => loadModel("assets/models/gtr-r35.glb", 0xf4f2ea), fit: true, spin: 0.005, dist: 3.5, pitch: 0.1 });
   const breu = document.getElementById("breu");

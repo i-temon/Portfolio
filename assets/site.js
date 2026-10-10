@@ -176,6 +176,9 @@ function addViz(parent, inverted) {
 }
 addViz(body, false);
 if (layer) addViz(layer, true);
+// The home screen has its own copy of the visualiser, drawn above the window and below the menu, stickers, car and ticker
+const homeScreen = document.querySelector(".home");
+if (homeScreen) { addViz(homeScreen, false); vizCanvases[vizCanvases.length - 1].fill = "rgba(244, 242, 234, 0.6)"; }
 
 // ---------- The brush-shaped window is a vector outline, so it fills the home screen without loading a picture ----------
 const brushShape = document.getElementById("brush-shape");
@@ -436,7 +439,7 @@ function drawVisualiser(active, t, beat) {
     const ctx = v.ctx;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = v.inverted ? "rgba(7, 7, 15, 0.9)" : "rgba(244, 242, 234, 0.92)";
+    ctx.fillStyle = v.fill || (v.inverted ? "rgba(7, 7, 15, 0.9)" : "rgba(244, 242, 234, 0.92)");
     const slot = w / BARS;
     const barW = slot * 0.6;
     for (let i = 0; i < BARS; i++) {

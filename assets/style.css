@@ -309,3 +309,35 @@ html { overflow-x: hidden; }
   html[lang="ar"] .home .menu .item { font-size: calc(var(--sw) * 0.043); }
   html[lang="ar"] .home .intro { font-size: calc(var(--sw) * 0.0115); }
 }
+
+/* Intro: the last name is paper, so it reads on the black and on the red sweep */
+.opening-name .l2 { color: var(--paper); }
+
+/* Visualiser order on the home screen: its own copy sits above the window and below the menu, stickers, car and ticker */
+body[data-view="home"] > canvas.viz { display: none; }
+.home > canvas.viz { position: absolute; left: 0; right: 0; bottom: 64px; z-index: 2; }
+.ink-layer canvas.viz { display: none; }
+.hero { z-index: 3; }
+
+/* Inner pages: the panel and the menu sit above the visualiser */
+.page > .panel { position: relative; z-index: 2; }
+.page > .menu { z-index: 2; }
+
+/* Desktop home: the menu sits a little further left, and the car has a larger box (the car is drawn inside it) */
+@media (min-width: 861px) {
+  .home .menu { left: calc(var(--ox) + var(--sw) * 0.05); }
+  .hero { left: calc(var(--ox) + var(--sw) * 0.485); top: calc(var(--oy) + var(--sh) * 0.13); width: calc(var(--sw) * 0.5); }
+}
+
+
+/* Home stacking, from the back: window, visualiser, car, then the menu and stickers, the ink copy, the ticker and the command bar */
+.hero { z-index: 3; }
+.stage { z-index: 4; }
+.ink-layer { z-index: 5; }
+.ticker { z-index: 6; }
+.command { z-index: 7; }
+
+/* Desktop home: the car sits a little higher, clear of the Coming soon sticker */
+@media (min-width: 861px) {
+  .hero { top: calc(var(--oy) + var(--sh) * 0.09); }
+}
