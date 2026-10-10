@@ -1,24 +1,25 @@
 /* The animated backdrop: a halftone print in cobalt, navy and paper, with a red slash of light that flares on each drop.
-   It is drawn on the graphics card, at half resolution for speed. site.js passes it the beat and the drop each frame. */
+   The graphics card draws it at half the screen size to keep it fast.
+   site.js passes in the beat and the drop on every frame. */
 (() => {
   const canvas = document.getElementById("bg");
   if (!canvas) return;
   const gl = canvas.getContext("webgl", { antialias: false, alpha: false, depth: false, stencil: false, preserveDrawingBuffer: true });
   if (!gl) return;
 
-  const compile = (type, source) => {
+  // Compiles one shader (the vertex part or the fragment part) and logs any error to the console.
+  function compile(type, source) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) console.error(gl.getShaderInfoLog(shader));
     return shader;
-  };
+  }
 
   const vertex = compile(gl.VERTEX_SHADER, `
     attribute vec2 position;
     void main() { gl_Position = vec4(position, 0.0, 1.0); }
   `);
-
   const fragment = compile(gl.FRAGMENT_SHADER, `
     precision highp float;
     uniform vec2 uRes;
@@ -68,6 +69,7 @@
   gl.linkProgram(program);
   gl.useProgram(program);
 
+  // One big triangle covers the whole screen, so the shader runs on every pixel.
   const buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
@@ -79,27 +81,29 @@
   const uT = gl.getUniformLocation(program, "uT");
   const uBeat = gl.getUniformLocation(program, "uBeat");
   const uDrop = gl.getUniformLocation(program, "uDrop");
-  const SCALE = 0.5;
+  const SCALE = 0.5; // half resolution
 
-  const resize = () => {
+  function resize() {
     canvas.width = Math.max(1, Math.round(innerWidth * SCALE));
     canvas.height = Math.max(1, Math.round(innerHeight * SCALE));
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.uniform2f(uRes, canvas.width, canvas.height);
-  };
+  }
   addEventListener("resize", resize);
   resize();
 
-  const reduced = () => document.documentElement.classList.contains("reduce-motion");
+  function reduced() {
+    return document.documentElement.classList.contains("reduce-motion");
+  }
   const start = performance.now();
-  const frame = now => {
+  function frame(now) {
     requestAnimationFrame(frame);
     const still = reduced();
-    const s = window.BEAT_STATE || { beat: 0, drop: 0 };
+    const beatInfo = window.BEAT_STATE || { beat: 0, drop: 0 };
     gl.uniform1f(uT, still ? 0 : (now - start) / 1000);
-    gl.uniform1f(uBeat, still ? 0 : s.beat);
-    gl.uniform1f(uDrop, still ? 0 : s.drop);
+    gl.uniform1f(uBeat, still ? 0 : beatInfo.beat);
+    gl.uniform1f(uDrop, still ? 0 : beatInfo.drop);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
-  };
+  }
   requestAnimationFrame(frame);
 })();

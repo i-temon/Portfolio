@@ -174,6 +174,10 @@ h2::after { content: ""; position: absolute; z-index: -1; left: -.2em; right: -.
 .rank { display: inline-block; margin-bottom: .45rem; padding: .2rem .5rem; background: var(--red); color: var(--ink); font: 900 .72rem/1 var(--body); letter-spacing: .12em; text-transform: uppercase; }
 .sl-name { display: block; font: 900 1.25rem/1.1 var(--display); text-transform: uppercase; }
 .sl-value { display: block; margin-top: .25rem; color: var(--sky); font: 700 .98rem/1.4 var(--body); overflow-wrap: anywhere; }
+/* Figma design on the About page: a framed embed, with a link to the full file underneath */
+.figma-frame { position: relative; aspect-ratio: 16 / 10; margin: 0 0 .9rem; border: 3px solid var(--ink); background: var(--white); box-shadow: 10px 10px 0 var(--red); }
+.figma-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.figma-link { margin: 0 0 1rem; font: 800 .95rem/1.4 var(--body); }
 
 /* Command palette */
 .palette { position: fixed; inset: 0; z-index: 70; display: grid; place-items: start center; padding-top: 14vh; background: rgba(7, 7, 15, .78); }
