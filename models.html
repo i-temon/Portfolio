@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>3D Models | Taim Alsharabaty</title>
+<meta name="description" content="IT student in Amman, completing BTEC Level 3 in Information Technology. 3D models, commissions and coursework.">
+<meta name="theme-color" content="#0f5a63">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Taim Alsharabaty">
+<meta property="og:title" content="Taim Alsharabaty | IT student and 3D artist">
+<meta property="og:description" content="IT student in Amman, completing BTEC Level 3 in Information Technology. 3D models, commissions and coursework.">
+<meta property="og:url" content="https://i-temon.github.io/Portfolio/models.html">
+<meta property="og:image" content="https://i-temon.github.io/Portfolio/assets/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/style.css">
+
+<script>
+try {
+  var A = JSON.parse(localStorage.getItem("access") || "{}"), H = document.documentElement;
+  var M = A.motion !== undefined ? A.motion : matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (M) H.classList.add("reduce-motion");
+  if (A.contrast) H.classList.add("contrast");
+  if (A.large) H.classList.add("text-large");
+  if (localStorage.getItem("lang") === "ar") { H.lang = "ar"; H.dir = "rtl"; }
+} catch (e) {}
+</script>
+</head>
+<body data-view="models">
+<a class="skip" href="#app" data-i18n="skip">Skip to content</a>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="flash" aria-hidden="true"></div>
+<div class="wipe-clip" aria-hidden="true"><div class="wipe"></div></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="grain"/><feDisplacementMap in="SourceGraphic" in2="grain" scale="3"/></filter>
+</svg>
+<p class="live" id="live" aria-live="polite"></p>
+<header class="top">
+  <a class="brand" href="index.html">Taim Alsharabaty</a>
+  <div class="top-tools">
+    <button class="tool" id="sound" type="button" aria-pressed="true"><span class="ico" aria-hidden="true">&#9835;</span><span class="lbl" data-i18n="music">Music</span></button>
+    <button class="tool" id="access-btn" type="button" aria-expanded="false" aria-controls="access"><span class="ico" aria-hidden="true">Aa</span><span class="lbl" data-i18n="access">Accessibility</span></button>
+    <button class="lang" id="lang" type="button" aria-label="Switch language">ع</button>
+  </div>
+</header>
+<div id="app" tabindex="-1">
+<section class="view" data-view="home" id="view-home" hidden>
+<div class="home">
+  <div class="ink" aria-hidden="true"></div>
+  <div class="hero">
+    <canvas id="gtr-hero" role="img" aria-label="Interactive wireframe 3D model of my Nissan GT-R R35. Drag to turn it."></canvas>
+  </div>
+  <main class="stage">
+    <section class="masthead">
+      <p class="issue"><span data-i18n="issue">Issue 01</span><span>2026</span></p>
+      <p class="name"><span class="n1">Taim</span><span class="n2">Alsharabaty</span></p>
+      <p class="intro" data-i18n="intro">IT student in Amman, completing BTEC Level 3 in Information Technology. I also model in 3D and design in 2D.</p>
+    </section>
+    <nav class="menu" aria-label="Main menu"><ul><li><span class="item is-off" aria-disabled="true"><span class="no" aria-hidden="true">&mdash;</span><span data-i18n="m_art">2D Art &amp; Design</span><span class="stamp" data-i18n="stamp">Coming soon</span></span></li><li><a class="item" href="models.html" data-desc="d_3d" data-desc-en="A GT-R model, a character commission and a hand study."><span class="no" aria-hidden="true">01</span><span data-i18n="m_3d">3D Models</span></a></li><li><a class="item" href="commissions.html" data-desc="d_comm" data-desc-en="Characters, props, game-ready assets and graphic design."><span class="no" aria-hidden="true">02</span><span data-i18n="m_comm">Commissions</span></a></li><li><a class="item" href="about.html" data-desc="d_about" data-desc-en="Education, coursework skills and achievements."><span class="no" aria-hidden="true">03</span><span data-i18n="m_about">About</span></a></li><li><a class="item" href="about.html#contact" data-desc="d_contact" data-desc-en="Email, phone and location."><span class="no" aria-hidden="true">04</span><span data-i18n="m_contact">Contact</span></a></li></ul></nav>
+    <div class="stats">
+      <p class="stat"><span data-i18n="stat_comm">Commissions completed</span><strong data-i18n="stat_comm_v">About 7</strong></p>
+      <p class="stat"><span data-i18n="stat_3d">Years making 3D art</span><strong data-i18n="stat_3d_v">2</strong></p>
+    </div>
+  </main>
+  <div class="ink-layer"></div>
+  <div class="ticker" aria-hidden="true"><div class="ticker-track"><span data-i18n="marquee">3D ARTIST ✦ BLENDER ✦ MAYA ✦ ZBRUSH ✦ SUBSTANCE PAINTER ✦ AMMAN, JORDAN ✦ IT STUDENT ✦ BTEC LEVEL 3 ✦ </span><span data-i18n="marquee">3D ARTIST ✦ BLENDER ✦ MAYA ✦ ZBRUSH ✦ SUBSTANCE PAINTER ✦ AMMAN, JORDAN ✦ IT STUDENT ✦ BTEC LEVEL 3 ✦ </span></div></div>
+<footer class="command">
+  <p class="desc" id="desc" aria-live="off">A GT-R model, a character commission and a hand study.</p>
+  <p class="keys"><kbd>&uarr;</kbd><kbd>&darr;</kbd><span data-i18n="sel">Select</span><kbd>Enter</kbd><span data-i18n="open">Open</span></p>
+</footer>
+</div>
+</section>
+<section class="view" data-view="models" id="view-models">
+<main class="page">
+  <nav class="menu" aria-label="Main menu"><ul><li><span class="item is-off" aria-disabled="true"><span class="no" aria-hidden="true">&mdash;</span><span data-i18n="m_art">2D Art &amp; Design</span><span class="stamp" data-i18n="stamp">Coming soon</span></span></li><li><a class="item" href="models.html" aria-current="page" data-desc="d_3d" data-desc-en="A GT-R model, a character commission and a hand study."><span class="no" aria-hidden="true">01</span><span data-i18n="m_3d">3D Models</span></a></li><li><a class="item" href="commissions.html" data-desc="d_comm" data-desc-en="Characters, props, game-ready assets and graphic design."><span class="no" aria-hidden="true">02</span><span data-i18n="m_comm">Commissions</span></a></li><li><a class="item" href="about.html" data-desc="d_about" data-desc-en="Education, coursework skills and achievements."><span class="no" aria-hidden="true">03</span><span data-i18n="m_about">About</span></a></li><li><a class="item" href="about.html#contact" data-desc="d_contact" data-desc-en="Email, phone and location."><span class="no" aria-hidden="true">04</span><span data-i18n="m_contact">Contact</span></a></li></ul></nav>
+  <article class="panel">
+<h1 class="panel-title" data-i18n="m_3d">3D Models</h1>
+<p class="lead" data-i18n="models_lead">Three models in wireframe: a car from a personal project, a character I made for a commission, and a hand study in Blender.</p>
+<div class="viewers">
+  <figure class="viewer">
+    <canvas id="gtr-models" role="img" aria-label="Interactive wireframe 3D model of my Nissan GT-R R35. Drag to turn it."></canvas>
+    <figcaption><strong data-i18n="v1_t">Nissan GT-R (R35)</strong><span data-i18n="v1_p">Personal project, wireframe. Drag to turn the car.</span></figcaption>
+  </figure>
+  <figure class="viewer">
+    <canvas id="breu" role="img" aria-label="Interactive wireframe 3D model of a character made for a commission. Drag to turn it."></canvas>
+    <figcaption><strong data-i18n="v2_t">Character commission</strong><span data-i18n="v2_p">Made for @breucat, a YouTube creator, in wireframe. Drag to turn.</span></figcaption>
+  </figure>
+  <figure class="viewer">
+    <canvas id="hand" role="img" aria-label="Interactive wireframe 3D model of a hand. Drag to turn it."></canvas>
+    <figcaption><strong data-i18n="v3_t">Hand study</strong><span data-i18n="v3_p">Modeled in Blender and shown as a wireframe. Drag to turn.</span></figcaption>
+  </figure>
+</div>
+  </article>
+</main>
+</section>
+<section class="view" data-view="commissions" id="view-commissions" hidden>
+<main class="page">
+  <nav class="menu" aria-label="Main menu"><ul><li><span class="item is-off" aria-disabled="true"><span class="no" aria-hidden="true">&mdash;</span><span data-i18n="m_art">2D Art &amp; Design</span><span class="stamp" data-i18n="stamp">Coming soon</span></span></li><li><a class="item" href="models.html" data-desc="d_3d" data-desc-en="A GT-R model, a character commission and a hand study."><span class="no" aria-hidden="true">01</span><span data-i18n="m_3d">3D Models</span></a></li><li><a class="item" href="commissions.html" aria-current="page" data-desc="d_comm" data-desc-en="Characters, props, game-ready assets and graphic design."><span class="no" aria-hidden="true">02</span><span data-i18n="m_comm">Commissions</span></a></li><li><a class="item" href="about.html" data-desc="d_about" data-desc-en="Education, coursework skills and achievements."><span class="no" aria-hidden="true">03</span><span data-i18n="m_about">About</span></a></li><li><a class="item" href="about.html#contact" data-desc="d_contact" data-desc-en="Email, phone and location."><span class="no" aria-hidden="true">04</span><span data-i18n="m_contact">Contact</span></a></li></ul></nav>
+  <article class="panel">
+<h1 class="panel-title" data-i18n="m_comm">Commissions</h1>
+<p class="lead" data-i18n="comm_lead">The work I take on, how a request starts, and what to send me.</p>
+<h2 data-i18n="svc_h">What I make</h2>
+<ul class="services">
+  <li data-i18n="svc_1">3D characters</li>
+  <li data-i18n="svc_2">Props and environments</li>
+  <li data-i18n="svc_3">Game-ready assets</li>
+  <li data-i18n="svc_4">Hard-surface models: weapons and vehicles</li>
+  <li class="closed"><span data-i18n="svc_5">2D illustration</span><span class="closed-tag" data-i18n="svc_closed">Not open for commissions</span></li>
+  <li data-i18n="svc_6">Graphic design</li>
+</ul>
+<h2 data-i18n="proc_h">How a commission starts</h2>
+<ol class="steps">
+  <li><span data-i18n="step_1">Send a brief: what you need, where it will be used, references, deadline and budget.</span></li>
+  <li><span data-i18n="step_2">I reply with the scope, timing and price.</span></li>
+  <li><span data-i18n="step_3">We agree, and I start with a work-in-progress preview.</span></li>
+  <li><span data-i18n="step_4">You receive the final files in the formats we agreed.</span></li>
+</ol>
+<p data-i18n="price_note">Pricing depends on the scope. Send your brief and I will quote it.</p>
+<a class="btn" href="mailto:i.temonoka@gmail.com?subject=Commission%20request&body=Hi%20Taim%2C%0A%0AI%20would%20like%20to%20commission%3A%0A-%20Type%20of%20work%20%28character%2C%20prop%2C%20game-ready%20asset%2C%20hard-surface%2C%202D%20illustration%2C%20graphic%20design%29%3A%0A-%20What%20it%20is%20for%20%28video%2C%20game%2C%20personal%2C%20other%29%3A%0A-%20References%20%28links%20or%20images%29%3A%0A-%20Deadline%3A%0A-%20Budget%3A%0A%0AThank%20you%21" data-i18n="mail_btn">Start a request by email</a>
+<h2 data-i18n="quote_h">What a client said</h2>
+<div class="dialogue"><span class="speaker">@breucat</span>
+  <p>&ldquo;Hehe it looks so cool. I can imagine a few ways to use it in the videos.&rdquo;</p>
+  <footer data-i18n="quote_by">@breucat, after receiving the model</footer>
+</div>
+  </article>
+</main>
+</section>
+<section class="view" data-view="about" id="view-about" hidden>
+<main class="page">
+  <nav class="menu" aria-label="Main menu"><ul><li><span class="item is-off" aria-disabled="true"><span class="no" aria-hidden="true">&mdash;</span><span data-i18n="m_art">2D Art &amp; Design</span><span class="stamp" data-i18n="stamp">Coming soon</span></span></li><li><a class="item" href="models.html" data-desc="d_3d" data-desc-en="A GT-R model, a character commission and a hand study."><span class="no" aria-hidden="true">01</span><span data-i18n="m_3d">3D Models</span></a></li><li><a class="item" href="commissions.html" data-desc="d_comm" data-desc-en="Characters, props, game-ready assets and graphic design."><span class="no" aria-hidden="true">02</span><span data-i18n="m_comm">Commissions</span></a></li><li><a class="item" href="about.html" aria-current="page" data-desc="d_about" data-desc-en="Education, coursework skills and achievements."><span class="no" aria-hidden="true">03</span><span data-i18n="m_about">About</span></a></li><li><a class="item" href="about.html#contact" data-desc="d_contact" data-desc-en="Email, phone and location."><span class="no" aria-hidden="true">04</span><span data-i18n="m_contact">Contact</span></a></li></ul></nav>
+  <article class="panel">
+<h1 class="panel-title" data-i18n="m_about">About</h1>
+<p class="nickname" data-i18n="nick">Nickname: Temon</p>
+<p class="persona-note" data-i18n="persona_note">The look of this website is inspired by Persona's menus.</p>
+<p class="lead" data-i18n="about_intro">I am an IT student in Amman, working towards BTEC Level 3 in Information Technology. My background covers programming, web design, data analysis and 3D art, and I am still learning.</p>
+<h2 data-i18n="edu_h">Education</h2>
+<ol class="timeline">
+  <li><span data-i18n="edu_1">Pearson BTEC Level 2 in IT. Completed, certificate held.</span></li>
+  <li><span data-i18n="edu_2">Pearson BTEC Level 3 in IT. In progress, expected 2028.</span></li>
+  <li><span data-i18n="edu_3">Imam Malik High School, Amman.</span></li>
+</ol>
+<h2 data-i18n="skills_h">Coursework skills</h2>
+<p data-i18n="skills_note">Built as school assignments.</p>
+<dl class="skills">
+  <div><dt data-i18n="sk_web">Web</dt><dd data-i18n="sk_web_v">HTML, web design in Figma</dd></div>
+  <div><dt data-i18n="sk_app">Apps</dt><dd data-i18n="sk_app_v">Dart and Flutter</dd></div>
+  <div><dt data-i18n="sk_game">Games</dt><dd data-i18n="sk_game_v">Game design in Unity</dd></div>
+  <div><dt data-i18n="sk_data">Data</dt><dd data-i18n="sk_data_v">Data analysis in Excel</dd></div>
+  <div><dt data-i18n="sk_3d">3D art</dt><dd data-i18n="sk_3d_v">Blender, Maya, ZBrush and Substance Painter</dd></div>
+</dl>
+<h2 data-i18n="ach_h">Achievements</h2>
+<p data-i18n="ach_1">1st place, English Speaking Contest, Markah District.</p>
+<h2 data-i18n="lang_h">Languages</h2>
+<p data-i18n="lang_v">Arabic (native), English (fluent).</p>
+<h2 data-i18n="design_h">Website design</h2>
+<div class="figma-frame">
+  <iframe id="figma-embed" src="https://www.figma.com/embed?embed_host=share&amp;url=https%3A%2F%2Fwww.figma.com%2Fdesign%2F5GaeCdCoEZbZBMCP4GGQo0%3Fnode-id%3D2-5" title="About screen design in Figma" loading="lazy" allowfullscreen></iframe>
+</div>
+<p class="figma-link"><a href="https://www.figma.com/design/5GaeCdCoEZbZBMCP4GGQo0" target="_blank" rel="noopener" data-i18n="design_link">Open the full design in Figma</a></p>
+<h2 id="contact" data-i18n="social_h">Social Links</h2>
+<ul class="social-cards">
+  <li><span class="rank" data-i18n="rank">Rank 1</span><span class="sl-name" data-i18n="c_email_l">Email</span><a class="sl-value" href="mailto:i.temonoka@gmail.com">i.temonoka@gmail.com</a></li>
+  <li><span class="rank" data-i18n="rank">Rank 1</span><span class="sl-name" data-i18n="c_phone_l">Phone</span><a class="sl-value" href="tel:+962782044738" dir="ltr">+962 78 204 4738</a></li>
+  <li><span class="rank" data-i18n="rank">Rank 1</span><span class="sl-name">GitHub</span><a class="sl-value" href="https://github.com/i-temon" dir="ltr">github.com/i-temon</a></li>
+  <li><span class="rank" data-i18n="rank">Rank 1</span><span class="sl-name" data-i18n="c_loc_l">Location</span><span class="sl-value" data-i18n="loc">Amman, Jordan</span></li>
+</ul>
+  </article>
+</main>
+</section>
+</div>
+<section class="access" id="access" hidden aria-labelledby="access-title">
+  <div class="access-box">
+    <h2 id="access-title" data-i18n="access_title">Accessibility</h2>
+    <button class="toggle" type="button" data-setting="motion" aria-pressed="false"><span data-i18n="a_motion">Reduce motion</span></button>
+    <button class="toggle" type="button" data-setting="contrast" aria-pressed="false"><span data-i18n="a_contrast">High contrast</span></button>
+    <button class="toggle" type="button" data-setting="large" aria-pressed="false"><span data-i18n="a_large">Larger text</span></button>
+    <p class="hint" data-i18n="a_hint">These settings are saved on this device.</p>
+    <button class="close" id="access-close" type="button" data-i18n="close">Close</button>
+  </div>
+</section>
+<div class="palette" id="palette" hidden>
+  <div class="palette-box" role="dialog" aria-modal="true" aria-label="Command palette">
+    <p class="palette-title" data-i18n="pal_title">Go to</p>
+    <input id="pal-input" type="text" autocomplete="off" aria-label="Search pages" placeholder="Type a page name">
+    <ul class="palette-list">
+      <li><a href="models.html" data-i18n="m_3d">3D Models</a></li>
+      <li><a href="commissions.html" data-i18n="m_comm">Commissions</a></li>
+      <li><a href="about.html" data-i18n="m_about">About</a></li>
+      <li><a href="about.html#contact" data-i18n="m_contact">Contact</a></li>
+      <li><a href="mailto:i.temonoka@gmail.com" data-i18n="pal_mail">Email me</a></li>
+      <li><button type="button" data-action="lang" data-i18n="pal_lang">Switch language</button></li>
+    </ul>
+  </div>
+</div>
+<audio id="music" src="assets/music.mp3" preload="auto" loop></audio>
+<script src="assets/vendor/three.min.js"></script>
+<script src="assets/vendor/GLTFLoader.js"></script>
+<script src="assets/viewer.js"></script>
+<script src="assets/background.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

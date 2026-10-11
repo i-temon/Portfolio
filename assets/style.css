@@ -1,0 +1,347 @@
+/* Taim Alsharabaty portfolio, magazine-cover design: cobalt, navy, paper, black and one hot red.
+   An original design, inspired by bold graphic posters and game menus. Sizes scale with the screen. */
+:root {
+  --cobalt: #1737ff;
+  --navy: #07154d;
+  --ink: #07070f;
+  --paper: #f4f2ea;
+  --white: #ffffff;
+  --red: #ff2442;
+  --sky: #5ce6ff;
+  --fg: var(--red);
+  --display: "Bodoni Moda", Didot, Georgia, serif;
+  --body: "DM Sans", Arial, sans-serif;
+  --arabic: "Cairo", Tahoma, sans-serif;
+  --slant: skewX(-8deg);
+  --window: polygon(36% 0, 100% 0, 100% 100%, 22% 100%);
+  --slash: polygon(33% 0, 36% 0, 22% 100%, 19% 100%);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 112%; background: var(--navy); }
+body { margin: 0; min-height: 100vh; overflow-x: hidden; color: var(--white); background: var(--navy); font-family: var(--body); font-weight: 500; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+html[lang="ar"] body { font-family: var(--arabic); }
+[hidden] { display: none !important; }
+a { color: inherit; }
+button { font: inherit; }
+:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; }
+
+/* Skip link and screen-reader box */
+.skip { position: absolute; left: -999px; top: 0; z-index: 100; padding: .5rem 1rem; background: var(--paper); color: var(--ink); font-weight: 900; }
+.skip:focus { left: .5rem; top: .5rem; }
+.live { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+/* Top bar */
+.top { position: fixed; top: 0; left: 0; right: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem 4vw; pointer-events: none; }
+.top > * { pointer-events: auto; }
+.brand { display: inline-block; padding: .4rem .9rem; background: var(--paper); color: var(--ink); font: 900 1.05rem/1 var(--display); text-transform: uppercase; letter-spacing: .02em; text-decoration: none; transform: var(--slant); box-shadow: 5px 5px 0 var(--ink); }
+.top-tools { display: flex; align-items: center; gap: .6rem; }
+.tool, .lang { display: inline-flex; align-items: center; gap: .4rem; min-height: 2.6rem; padding: .45rem .9rem; border: 3px solid var(--ink); background: var(--paper); color: var(--ink); font: 900 .9rem/1 var(--body); text-transform: uppercase; letter-spacing: .08em; cursor: pointer; transform: var(--slant); box-shadow: 4px 4px 0 var(--ink); transition: transform .15s ease, box-shadow .15s ease; }
+.tool[aria-pressed="true"] { background: var(--red); }
+.tool:hover, .lang:hover { transform: var(--slant) translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+.lang { min-width: 2.6rem; justify-content: center; font-family: var(--arabic); }
+.ico { font: 900 1rem/1 var(--display); }
+
+/* The opening: the name on black, a red slash sweeps across, then the cover appears */
+.opening { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; overflow: hidden; background: var(--ink); transition: opacity .5s ease, transform .5s ease; }
+.opening::before { content: ""; position: absolute; inset: 0; background: var(--red); clip-path: polygon(0 40%, 100% 22%, 100% 52%, 0 72%); animation: sweep 1.2s cubic-bezier(.7, 0, .2, 1) .15s both; }
+.opening-name { position: relative; margin: 0; font: 900 clamp(4.5rem, 17vw, 16rem)/.8 var(--display); text-transform: uppercase; text-align: center; }
+.opening-name .l1 { display: block; color: var(--paper); }
+.opening-name .l2 { display: block; margin-top: .25em; font-size: 34%; color: var(--ink); letter-spacing: .14em; }
+.opening .ch { display: inline-block; animation: chIn .7s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--i, 0) * 45ms + .2s); }
+.opening.leaving { opacity: 0; transform: scale(1.04); pointer-events: none; }
+.opening-skip { position: absolute; right: 4vw; bottom: 4vh; padding: .6rem 1rem; border: 3px solid var(--paper); background: transparent; color: var(--paper); font-weight: 900; text-transform: uppercase; letter-spacing: .1em; cursor: pointer; }
+@keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@keyframes chIn { from { opacity: 0; transform: translateY(40%) skewX(-12deg); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(24px) skewX(-6deg); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes drift { to { background-position: 240px 120px; } }
+
+/* Home: the cover. A black window cuts across the cobalt page; the car lives inside it. */
+.home { position: relative; height: 100vh; min-height: 720px; overflow: hidden; isolation: isolate; }
+.home::before { content: ""; position: absolute; inset: 0; z-index: 0; background: var(--red); clip-path: var(--slash); }
+.ink { position: absolute; inset: 0; z-index: 1; clip-path: var(--window); background-color: var(--ink); background-image: radial-gradient(rgba(244, 242, 234, .12) 1.2px, transparent 1.7px); background-size: 12px 12px; animation: drift 40s linear infinite; }
+.hero { position: absolute; z-index: 2; top: 25vh; right: 9vw; width: min(35vw, 60vh); aspect-ratio: 1 / 1; transform: scale(calc(1 + var(--beat) * .012)); animation: fadeIn 1.2s .2s both; }
+.hero canvas { display: block; width: 100%; height: 100%; }
+.stage { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.stage > * { pointer-events: auto; animation: rise .8s cubic-bezier(.2, .8, .2, 1) both; }
+.stage > .stats { pointer-events: none; }
+.stage > .masthead { animation-delay: .1s; }
+.stage > .menu { animation-delay: .25s; }
+.stage > .stats { animation-delay: .4s; }
+.masthead { position: absolute; left: 6vw; top: 13vh; width: min(48vw, 44rem); }
+.issue { display: flex; align-items: center; gap: .7rem; margin: 0 0 .7rem; font: 900 .95rem/1 var(--body); letter-spacing: .24em; text-transform: uppercase; }
+.issue span:first-child { padding: .3rem .6rem; background: var(--red); color: var(--ink); transform: var(--slant); }
+.name { margin: 0; font: 900 clamp(4.2rem, 10.2vw, 11.5rem)/.8 var(--display); text-transform: uppercase; letter-spacing: -.02em; color: var(--white); text-shadow: 6px 6px 0 var(--ink); }
+.name span { display: block; animation: rise .9s cubic-bezier(.2, .8, .2, 1) both; }
+.name .n2 { font-size: 62%; color: var(--paper); letter-spacing: -.01em; animation-delay: .12s; }
+.intro { max-width: 25rem; margin: 1.4rem 0 0; padding: 1rem 1.2rem; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); font: 700 1.02rem/1.45 var(--body); transform: rotate(-1.5deg); box-shadow: 8px 8px 0 var(--red); }
+
+/* The menu: huge tilted serif labels, numbered, with a red slash that jumps on hover */
+.menu ul { list-style: none; margin: 0; padding: 0; }
+.menu li { margin: 0; }
+.menu .item { position: relative; isolation: isolate; display: inline-flex; align-items: baseline; gap: .7rem; padding: .05em .2em; color: var(--white); font: 900 clamp(2.6rem, 4.6vw, 4.9rem)/.92 var(--display); text-transform: uppercase; text-decoration: none; text-shadow: 4px 4px 0 var(--ink); transform: var(--slant); transition: transform .2s ease, color .2s ease; }
+.menu .item::before { content: ""; position: absolute; z-index: -1; left: -.45em; right: -.45em; top: 14%; bottom: 10%; background: var(--red); transform: scaleX(0); transform-origin: left center; transition: transform .25s ease; }
+.menu .no { font: 900 .9rem/1 var(--body); letter-spacing: .14em; color: var(--red); text-shadow: none; transform: skewX(8deg); }
+.menu .item:hover, .menu .item:focus-visible, .menu .item.hot { transform: var(--slant) translateX(14px); }
+.menu .item:hover::before, .menu .item:focus-visible::before, .menu .item.hot::before, .menu .item[aria-current="page"]::before { transform: scaleX(1); }
+.menu .item[aria-current="page"] { color: var(--ink); text-shadow: none; }
+.menu .is-off { pointer-events: none; opacity: .5; }
+.stamp { display: inline-block; margin-left: .6rem; padding: .25rem .5rem; background: var(--red); color: var(--ink); font: 900 .8rem/1 var(--body); letter-spacing: .12em; text-transform: uppercase; vertical-align: middle; transform: rotate(-4deg); box-shadow: 3px 3px 0 var(--ink); }
+.home .menu { position: absolute; left: 6vw; top: 53vh; }
+
+/* Stickers: two paper and red tags, tilted like pasted-on labels */
+.stats { position: absolute; top: 10vh; right: 6vw; display: grid; gap: 1rem; justify-items: end; }
+.stat { display: grid; gap: .1rem; min-width: 14rem; margin: 0; padding: .7rem 1rem; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); box-shadow: 7px 7px 0 var(--red); font: 800 .98rem/1.2 var(--body); transform: rotate(2.5deg); }
+.stat:nth-child(2) { background: var(--red); transform: rotate(-3deg); }
+.stat strong { font: 900 2.6rem/1 var(--display); }
+
+/* The ticker: a red band of moving words across the bottom of the cover */
+.ticker { position: absolute; left: 0; right: 0; bottom: 64px; z-index: 5; display: flex; align-items: center; height: 2.9rem; overflow: hidden; background: var(--red); color: var(--ink); transform: rotate(-1.2deg) scale(1.04); box-shadow: 0 -4px 0 var(--ink); }
+.ticker-track { display: flex; width: max-content; animation: marquee 26s linear infinite; }
+.ticker-track span { padding: 0 1.4rem; font: 900 1.05rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+
+/* The command bar: the description and the keys */
+.command { position: absolute; left: 0; right: 0; bottom: 0; z-index: 6; display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 64px; padding: 0 4vw; background: transparent; color: var(--white); }
+.desc { margin: 0; font: 700 1rem/1.3 var(--body); text-shadow: 0 2px 0 var(--ink); }
+.keys { display: flex; align-items: center; gap: .5rem; margin: 0; font: 800 .9rem/1 var(--body); text-transform: uppercase; letter-spacing: .1em; }
+kbd { display: inline-grid; place-items: center; min-width: 2rem; height: 2rem; padding: 0 .4rem; border: 2px solid var(--white); color: var(--white); font: 900 .95rem/1 var(--body); }
+
+/* The inverted copy: the same menu and stickers, clipped to the window and drawn in red on black */
+.ink-layer { position: absolute; inset: 0; z-index: 4; pointer-events: none; clip-path: var(--window); --fg: var(--red); }
+.ink-layer .stage { z-index: auto; }
+.ink-layer .name, .ink-layer .item { color: var(--fg); text-shadow: none; }
+.ink-layer .item::before { background: var(--red); }
+.ink-layer .item.hot, .ink-layer .item:hover { color: var(--ink); }
+.ink-layer .item.hot .no, .ink-layer .item:hover .no { color: var(--ink); }
+canvas.viz { position: fixed; left: 0; right: 0; bottom: 64px; z-index: 1; width: 100%; height: 30vh; opacity: 0; pointer-events: none; transition: opacity .4s ease; }
+.ink-layer canvas.viz { position: absolute; bottom: 0; height: 30vh; }
+html.playing canvas.viz { opacity: 1; }
+
+/* Inner pages: a cobalt spread, a sticky menu on the left, a paper panel on the right */
+.page { position: relative; min-height: 100vh; display: grid; grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr); gap: 2.5vw; align-items: start; padding: 7.5rem 4vw 5rem; background-color: var(--cobalt); background-image: radial-gradient(rgba(244, 242, 234, .1) 1.2px, transparent 1.7px); background-size: 12px 12px; }
+.page .menu { position: sticky; top: 7rem; }
+.page .menu .item { font-size: clamp(2rem, 2.8vw, 3rem); }
+.panel { position: relative; min-width: 0; padding: clamp(1.4rem, 3vw, 3.2rem); background: var(--paper); color: var(--ink); border: 4px solid var(--ink); box-shadow: 14px 14px 0 var(--red); }
+.panel-title { margin: 0 0 .6rem; font: 900 clamp(4rem, 9.5vw, 10rem)/.82 var(--display); text-transform: uppercase; letter-spacing: -.02em; color: var(--ink); }
+.lead { max-width: 40rem; margin: 0 0 1.6rem; font: 700 1.15rem/1.5 var(--body); }
+h2 { position: relative; isolation: isolate; display: inline-block; margin: 2.2rem 0 .9rem; font: 900 clamp(1.7rem, 2.6vw, 2.5rem)/1 var(--display); text-transform: uppercase; }
+h2::after { content: ""; position: absolute; z-index: -1; left: -.2em; right: -.2em; bottom: .06em; height: .26em; background: var(--red); transform: skewX(-12deg); }
+
+/* 3D viewers: a large card and two smaller ones, each framed in black with a red shadow */
+.viewers { display: grid; grid-template-columns: 1.5fr 1fr; grid-auto-rows: minmax(16rem, auto); gap: 1.4rem; }
+.viewer { position: relative; display: flex; flex-direction: column; min-width: 0; margin: 0; background: var(--ink); color: var(--white); border: 3px solid var(--ink); box-shadow: 10px 10px 0 var(--red); }
+.viewer:first-child { grid-row: span 2; }
+.viewer canvas { display: block; flex: 1 1 auto; width: 100%; min-height: 16rem; cursor: grab; }
+.viewer canvas.grabbing { cursor: grabbing; }
+.viewer figcaption { padding: .9rem 1rem 1rem; border-top: 3px solid var(--red); }
+.viewer strong { display: block; font: 900 1.45rem/1.05 var(--display); text-transform: uppercase; }
+.viewer figcaption span { display: block; margin-top: .25rem; color: #d7dcf5; font: 600 .95rem/1.4 var(--body); }
+.viewer-status { position: absolute; left: 1rem; right: 1rem; bottom: 1rem; margin: 0; padding: .5rem .7rem; background: var(--paper); color: var(--ink); font: 800 .95rem/1.4 var(--body); }
+.hero .viewer-status { bottom: auto; top: 1rem; }
+
+/* Commissions */
+.services { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .8rem; list-style: none; margin: 0; padding: 0; counter-reset: svc; }
+.services li { position: relative; padding: 1rem 1.1rem 1.1rem; background: var(--white); border: 3px solid var(--ink); font: 800 1.05rem/1.3 var(--body); }
+.services li::before { counter-increment: svc; content: counter(svc, decimal-leading-zero); display: block; margin-bottom: .4rem; color: var(--cobalt); font: 900 2.2rem/1 var(--display); }
+.services .closed { background: #e7e4da; }
+.services .closed > span:first-child { opacity: .5; }
+.closed-tag { display: inline-block; margin-top: .5rem; padding: .25rem .5rem; background: var(--red); color: var(--ink); font: 900 .72rem/1 var(--body); letter-spacing: .1em; text-transform: uppercase; transform: rotate(-2deg); }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .9rem; list-style: none; margin: 0; padding: 0; counter-reset: st; }
+.steps li { counter-increment: st; padding-top: .8rem; border-top: 8px solid var(--ink); font: 600 .98rem/1.45 var(--body); }
+.steps li:nth-child(2) { border-color: var(--cobalt); }
+.steps li:nth-child(3) { border-color: var(--red); }
+.steps li::before { content: counter(st, decimal-leading-zero); display: block; margin-bottom: .3rem; color: var(--ink); font: 900 2.6rem/1 var(--display); }
+.btn { display: inline-block; margin-top: 1.2rem; padding: 1rem 1.6rem; background: var(--ink); color: var(--white); font: 900 1.05rem/1 var(--body); letter-spacing: .12em; text-transform: uppercase; text-decoration: none; box-shadow: 8px 8px 0 var(--red); transform: var(--slant); transition: transform .15s ease, box-shadow .15s ease; }
+.btn:hover, .btn:focus-visible { transform: var(--slant) translate(-3px, -3px); box-shadow: 11px 11px 0 var(--red); }
+.dialogue { position: relative; margin: 2rem 0 0; padding: 1.4rem 1.6rem 1.2rem; background: var(--ink); color: var(--white); box-shadow: 10px 10px 0 var(--cobalt); }
+.dialogue p { margin: .3rem 0 .6rem; font: 800 clamp(1.2rem, 1.8vw, 1.6rem)/1.35 var(--display); }
+.dialogue footer { color: #c7cdf0; font: 600 .95rem/1.4 var(--body); }
+.speaker { position: absolute; top: -.9rem; left: 1.2rem; padding: .25rem .65rem; background: var(--red); color: var(--ink); font: 900 .9rem/1 var(--body); letter-spacing: .1em; text-transform: uppercase; }
+
+/* About */
+.nickname { display: inline-block; margin: 0 0 .6rem; padding: .4rem .8rem; background: var(--red); color: var(--ink); font: 900 1rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase; transform: rotate(-2deg); box-shadow: 4px 4px 0 var(--ink); }
+.persona-note { display: inline-block; margin: 0 0 1.4rem; padding: .6rem .9rem; background: var(--cobalt); color: var(--white); font: 700 .98rem/1.4 var(--body); }
+.timeline { list-style: none; margin: 0; padding: 0; border-left: 6px solid var(--ink); }
+.timeline li { position: relative; padding: .2rem 0 .9rem 1.4rem; font: 600 1.02rem/1.45 var(--body); }
+.timeline li::before { content: ""; position: absolute; left: -.6rem; top: .45rem; width: 1.1rem; height: 1.1rem; background: var(--red); transform: skewX(-12deg); }
+.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: .7rem; margin: 0; }
+.skills div { padding: .7rem .9rem; background: var(--white); border: 3px solid var(--ink); }
+.skills dt { font: 900 1.05rem/1 var(--display); text-transform: uppercase; }
+.skills dd { margin: .3rem 0 0; font: 600 .98rem/1.4 var(--body); }
+.social-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .9rem; list-style: none; margin: 0; padding: 0; }
+.social-cards li { position: relative; padding: .9rem 1rem 1rem; background: var(--ink); color: var(--white); box-shadow: 6px 6px 0 var(--red); }
+.rank { display: inline-block; margin-bottom: .45rem; padding: .2rem .5rem; background: var(--red); color: var(--ink); font: 900 .72rem/1 var(--body); letter-spacing: .12em; text-transform: uppercase; }
+.sl-name { display: block; font: 900 1.25rem/1.1 var(--display); text-transform: uppercase; }
+.sl-value { display: block; margin-top: .25rem; color: var(--sky); font: 700 .98rem/1.4 var(--body); overflow-wrap: anywhere; }
+/* Figma design on the About page: a framed embed, with a link to the full file underneath */
+.figma-frame { position: relative; aspect-ratio: 16 / 10; margin: 0 0 .9rem; border: 3px solid var(--ink); background: var(--white); box-shadow: 10px 10px 0 var(--red); }
+.figma-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.figma-link { margin: 0 0 1rem; font: 800 .95rem/1.4 var(--body); }
+
+/* Command palette */
+.palette { position: fixed; inset: 0; z-index: 70; display: grid; place-items: start center; padding-top: 14vh; background: rgba(7, 7, 15, .78); }
+.palette-box { width: min(34rem, 92vw); padding: 1.4rem; background: var(--paper); color: var(--ink); border: 4px solid var(--ink); box-shadow: 12px 12px 0 var(--red); }
+.palette-title { margin: 0 0 .7rem; font: 900 1.6rem/1 var(--display); text-transform: uppercase; }
+#pal-input { width: 100%; padding: .7rem .8rem; border: 3px solid var(--ink); background: var(--white); color: var(--ink); font: 700 1.1rem var(--body); }
+.palette-list { margin: .9rem 0 0; padding: 0; list-style: none; }
+.palette-list a, .palette-list button { display: block; width: 100%; padding: .6rem .8rem; border: 0; background: none; color: var(--ink); font: 800 1.1rem/1.2 var(--body); text-align: start; text-decoration: none; cursor: pointer; }
+.palette-list li.sel a, .palette-list li.sel button { background: var(--red); }
+
+/* Accessibility panel */
+.access { position: fixed; inset: 0; z-index: 75; display: grid; place-items: center; padding: 1rem; background: rgba(7, 7, 15, .8); }
+.access-box { width: min(30rem, 94vw); padding: 1.6rem; background: var(--paper); color: var(--ink); border: 4px solid var(--ink); box-shadow: 12px 12px 0 var(--red); }
+.access-box h2 { display: block; margin: 0 0 1rem; font: 900 2rem/1 var(--display); text-transform: uppercase; }
+.access-box h2::after { display: none; }
+.toggle { display: flex; width: 100%; align-items: center; justify-content: space-between; margin: .5rem 0; padding: .75rem .9rem; border: 3px solid var(--ink); background: var(--white); color: var(--ink); font: 800 1.05rem/1 var(--body); text-align: start; cursor: pointer; }
+.toggle::after { content: "OFF"; font: 900 .9rem/1 var(--body); letter-spacing: .12em; opacity: .6; }
+.toggle[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.toggle[aria-pressed="true"]::after { content: "ON"; color: var(--red); opacity: 1; }
+.hint { margin: .8rem 0; font: 600 .95rem/1.4 var(--body); }
+.close { margin-top: .5rem; padding: .6rem 1rem; border: 3px solid var(--ink); background: var(--red); color: var(--ink); font: 900 .95rem/1 var(--body); text-transform: uppercase; letter-spacing: .1em; cursor: pointer; }
+
+/* The page change: a three-band slash (red, paper, black) sweeps across and away */
+.wipe-clip { position: fixed; inset: 0; z-index: 50; overflow: hidden; pointer-events: none; }
+.wipe { position: absolute; top: -20vh; bottom: -20vh; left: -10vw; right: -10vw; transform: translateX(-120%) skewX(-12deg); background: linear-gradient(90deg, var(--red) 0 42%, var(--paper) 42% 47%, var(--ink) 47% 100%); }
+.wipe.enter { transform: translateX(0) skewX(-12deg); transition: transform .2s cubic-bezier(.6, 0, .2, 1); }
+.wipe.leave { transform: translateX(120%) skewX(-12deg); transition: transform .2s cubic-bezier(.6, 0, .2, 1); }
+.flash { position: fixed; inset: 0; z-index: 40; opacity: 0; pointer-events: none; background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, .55), rgba(255, 36, 66, .25) 55%, transparent 75%); mix-blend-mode: screen; }
+
+/* Motion, contrast and text size settings */
+html.reduce-motion *, html.reduce-motion *::before, html.reduce-motion *::after { animation: none !important; transition: none !important; }
+html.reduce-motion .hero { transform: none; }
+html.reduce-motion .stage > *, html.reduce-motion .name span { opacity: 1; }
+html.text-large { font-size: 128%; }
+html.contrast body, html.contrast .page { background: #000; background-image: none; }
+html.contrast .ink, html.contrast .home::before { background-image: none; }
+html.contrast .ink, html.contrast .ink-layer { background-color: #000; }
+html.contrast canvas.viz { display: none; }
+html.contrast .item, html.contrast .name { text-shadow: none; }
+
+/* Phones and small tablets: the cover stacks, and the inner pages come first with the menu above the panel */
+@media (max-width: 860px) {
+  :root { --window: polygon(0 40%, 100% 30%, 100% 100%, 0 100%); }
+  .home { height: auto; min-height: 100vh; }
+  .home::before { display: none; }
+  .masthead { left: 5vw; right: 5vw; top: 11vh; width: auto; }
+  .name { font-size: clamp(3.4rem, 16vw, 7rem); }
+  .intro { max-width: none; font-size: .92rem; }
+  .hero { top: 38vh; left: 50%; right: auto; width: 56vw; margin-left: -28vw; }
+  .home .menu { left: 5vw; top: 63vh; }
+  .home .menu .item { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+  .stats { display: none; }
+  .ticker { display: none; }
+  .command { min-height: 64px; padding: .7rem 5vw; }
+  .page { grid-template-columns: minmax(0, 1fr); padding: 6.5rem 5vw 4rem; }
+  .page .menu { position: static; }
+  .page .menu ul { display: flex; flex-wrap: wrap; gap: .4rem 1rem; }
+  .page .menu .item { font-size: 1.6rem; }
+  .panel { padding: 1.3rem; box-shadow: 8px 8px 0 var(--red); }
+  .viewers { grid-template-columns: minmax(0, 1fr); }
+  .viewer:first-child { grid-row: auto; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .social-cards { grid-template-columns: minmax(0, 1fr); }
+  .tool .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .brand { font-size: .9rem; }
+  canvas.viz { height: 22vh; }
+}
+@media (hover: none) { .keys { display: none; } }
+
+/* The backdrop fills the whole screen behind everything else */
+#bg { position: fixed; inset: 0; z-index: 0; display: block; width: 100vw; height: 100vh; }
+
+/* The home menu sits below the intro card and above the ticker */
+.home .menu { top: 55vh; }
+.home .menu .item { font-size: clamp(2.4rem, 3.7vw, 4rem); }
+
+/* Page titles scale with the panel, so a long word such as COMMISSIONS never runs past it */
+.panel-title { font-size: clamp(1.9rem, 5.8vw, 6.4rem); overflow-wrap: anywhere; }
+
+/* The Coming soon stamp stays on one line */
+.stamp { white-space: nowrap; }
+
+/* Phones: a smaller menu so every label fits, and no bottom bar, since touch screens have no keys */
+@media (max-width: 860px) {
+  .home .menu .item { font-size: clamp(1.5rem, 6.4vw, 2.2rem); }
+  .command { display: none; }
+}
+
+/* The moving ticker is contained, and the page can never scroll sideways, in either direction of reading */
+.ticker { contain: paint; }
+html { overflow-x: hidden; }
+
+/* The skip link hangs above the screen until it is focused, so nothing sits off the left edge (that broke right-to-left pages) */
+.skip { left: .5rem; top: -4rem; }
+.skip:focus { top: .5rem; left: .5rem; }
+
+/* Desktop home: one fixed-proportion stage, centred. Every size and position inside it is a share of the stage,
+   so the title, the menu, the stickers and the car keep their places at any screen size. */
+@media (min-width: 861px) {
+  .home { --uh: calc(100vh - 215px); --sw: min(calc(var(--uh) * 1.6), calc(100vw * 0.9)); --sh: calc(var(--sw) / 1.6); --ox: calc((100% - var(--sw)) / 2); --oy: calc(80px + (var(--uh) - var(--sh)) / 2); }
+  .home .masthead { left: calc(var(--ox) + var(--sw) * 0.06); top: calc(var(--oy) + var(--sh) * 0.13); width: calc(var(--sw) * 0.5); }
+  .home .issue { font-size: calc(var(--sw) * 0.0125); margin-bottom: calc(var(--sw) * 0.008); }
+  .home .name { font-size: calc(var(--sw) * 0.102); }
+  .home .intro { font-size: calc(var(--sw) * 0.0125); max-width: calc(var(--sw) * 0.27); margin-top: calc(var(--sw) * 0.014); padding: calc(var(--sw) * 0.009) calc(var(--sw) * 0.011); }
+  .home .menu { left: calc(var(--ox) + var(--sw) * 0.06); top: calc(var(--oy) + var(--sh) * 0.6); }
+  .home .menu .item { font-size: calc(var(--sw) * 0.046); }
+  .home .stats { left: calc(var(--ox) + var(--sw) * 0.74); top: calc(var(--oy) + var(--sh) * 0.10); right: auto; bottom: auto; }
+  .home .stat { min-width: calc(var(--sw) * 0.17); font-size: calc(var(--sw) * 0.0125); }
+  .home .stat strong { font-size: calc(var(--sw) * 0.03); }
+  .hero { left: calc(var(--ox) + var(--sw) * 0.56); top: calc(var(--oy) + var(--sh) * 0.25); right: auto; width: calc(var(--sw) * 0.35); }
+  .page .menu .item { font-size: clamp(1.5rem, min(2.6vw, 3.6vh), 3rem); }
+}
+
+/* Status messages sit clear of the captions: at the top of a card, or in the middle of the home car */
+.viewer-status { top: 1rem; bottom: auto; }
+.hero .viewer-status { top: 50%; transform: translateY(-50%); }
+
+
+/* The two stickers sit side by side along the top right, clear of the car's frame */
+@media (min-width: 861px) {
+  .home .stats { display: flex; flex-direction: row; align-items: flex-start; justify-items: initial; gap: calc(var(--sw) * 0.012); left: calc(var(--ox) + var(--sw) * 0.6); top: calc(var(--oy) + var(--sh) * 0.06); }
+  .home .stat { min-width: calc(var(--sw) * 0.19); }
+}
+
+/* Arabic sets the intro text taller, so the Arabic menu sits a little lower */
+@media (min-width: 861px) {
+  html[lang="ar"] .home .menu { top: calc(var(--oy) + var(--sh) * 0.59); }
+}
+
+/* Arabic type runs taller: a little smaller in the intro and the menu, and the menu sits just under the intro */
+@media (min-width: 861px) {
+  html[lang="ar"] .home .menu { top: calc(var(--oy) + var(--sh) * 0.59); }
+  html[lang="ar"] .home .menu .item { font-size: calc(var(--sw) * 0.043); }
+  html[lang="ar"] .home .intro { font-size: calc(var(--sw) * 0.0115); }
+}
+
+/* Intro: the last name is paper, so it reads on the black and on the red sweep */
+.opening-name .l2 { color: var(--paper); }
+
+/* Visualiser order on the home screen: its own copy sits above the window and below the menu, stickers, car and ticker */
+body[data-view="home"] > canvas.viz { display: none; }
+.home > canvas.viz { position: absolute; left: 0; right: 0; bottom: 64px; z-index: 2; }
+.ink-layer canvas.viz { display: none; }
+.hero { z-index: 3; }
+
+/* Inner pages: the panel and the menu sit above the visualiser */
+.page > .panel { position: relative; z-index: 2; }
+.page > .menu { z-index: 2; }
+
+/* Desktop home: the menu sits a little further left, and the car has a larger box (the car is drawn inside it) */
+@media (min-width: 861px) {
+  .home .menu { left: calc(var(--ox) + var(--sw) * 0.05); }
+  .hero { left: calc(var(--ox) + var(--sw) * 0.485); top: calc(var(--oy) + var(--sh) * 0.13); width: calc(var(--sw) * 0.5); }
+}
+
+
+/* Home stacking, from the back: window, visualiser, car, then the menu and stickers, the ink copy, the ticker and the command bar */
+.hero { z-index: 3; }
+.stage { z-index: 4; }
+.ink-layer { z-index: 5; }
+.ticker { z-index: 6; }
+.command { z-index: 7; }
+
+/* Desktop home: the car sits a little higher, clear of the Coming soon sticker */
+@media (min-width: 861px) {
+  .hero { top: calc(var(--oy) + var(--sh) * 0.09); }
+}
